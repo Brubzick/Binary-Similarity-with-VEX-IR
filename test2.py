@@ -4,7 +4,7 @@ from strand_normalization import TypeNorm
 import hashlib
 
 proj1 = angr.Project('./dfs', auto_load_libs = False)
-proj2 = angr.Project('./dfs2', auto_load_libs = False)
+proj2 = angr.Project('./bfs', auto_load_libs = False)
 
 cfg1 = proj1.analyses.CFGFast(normalize=True)
 cfg2 = proj2.analyses.CFGFast(normalize=True)

@@ -64,11 +64,17 @@ def TypeNorm(stmt):
                 if stmt_str_list[i] == '=':
                     tmp = stmt_str_list[i+1]
                     break
-            for i in range(0, len(tmp)):
-                if tmp[i] == '(':
-                    tmp = tmp[:i]
-                    break
-            norm = tmp
+            
+            if tmp[0] == 't':
+                norm = 'Copy'
+            elif tmp[0:2] == '0x':
+                norm = 'Constant'
+            else:
+                for i in range(0, len(tmp)):
+                    if tmp[i] == '(':
+                        tmp = tmp[:i]
+                        break
+                norm = tmp
 
         case 'Ist_Store':
             stmt_str_list = stmt_str.split()

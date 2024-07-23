@@ -4,7 +4,7 @@ from strand_normalization import StrandNorm
 import hashlib
 
 proj1 = angr.Project('./dfs', auto_load_libs = False)
-proj2 = angr.Project('./dfs3', auto_load_libs = False)
+proj2 = angr.Project('./dfs2', auto_load_libs = False)
 
 cfg1 = proj1.analyses.CFGFast(normalize=True)
 cfg2 = proj2.analyses.CFGFast(normalize=True)
@@ -18,6 +18,7 @@ for node in cfg1.nodes():
     if (not node.is_simprocedure):
 
         strands = GetStrands(node)
+        # indexDict1 = {'max':0}
 
         for i in range(0, len(strands)):
             strands[i], indexDict1 = StrandNorm(strands[i], indexDict1)
@@ -34,6 +35,7 @@ for node in cfg2.nodes():
     if (not node.is_simprocedure):
 
         strands = GetStrands(node)
+        # indexDict2 = {'max':0}
 
         for i in range(0, len(strands)):
             strands[i], indexDict2 = StrandNorm(strands[i], indexDict2)
