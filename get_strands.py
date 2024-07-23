@@ -38,10 +38,10 @@ def GetStrands(node):
         stmt_str = str(stmt)
         strand = []
 
-        if (stmt_str[0] != '-'):
+        if (stmt.tag != 'Ist_IMark'):
             refS = HandleIR(stmt_str)[1]
             if (len(refS) != 0):
-                strand.append(stmt_str)
+                strand.append(stmt)
 
                 for j in range(i-1, -1, -1):
                     stmtT = statements[j]
@@ -49,7 +49,7 @@ def GetStrands(node):
                     defT, refT = HandleIR(stmt_str_T)
 
                     if (refS.intersection(defT)):
-                        strand.append(stmt_str_T)
+                        strand.append(stmtT)
                         refS = refS.union(refT)
 
                 strand.reverse()

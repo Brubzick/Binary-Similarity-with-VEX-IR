@@ -1,18 +1,16 @@
 import angr
 from get_strands import GetStrands 
-from strand_normalization import StrandNorm
+from strand_normalization import TypeNorm
 import hashlib
 
 proj1 = angr.Project('./dfs', auto_load_libs = False)
-proj2 = angr.Project('./dfs3', auto_load_libs = False)
+proj2 = angr.Project('./dfs2', auto_load_libs = False)
 
 cfg1 = proj1.analyses.CFGFast(normalize=True)
 cfg2 = proj2.analyses.CFGFast(normalize=True)
 
 hashedStrandSet1 = set()
 hashedStrandSet2 = set()
-indexDict1 = {'max':0}
-indexDict2 = {'max':0}
 
 for node in cfg1.nodes():
     if (not node.is_simprocedure):
@@ -20,7 +18,8 @@ for node in cfg1.nodes():
         strands = GetStrands(node)
 
         for i in range(0, len(strands)):
-            strands[i], indexDict1 = StrandNorm(strands[i], indexDict1)
+            for j in range(0, len(strands[i])):
+                strands[i][j] = TypeNorm(strands[i][j])
 
         for strand in strands:
             md5 = hashlib.md5()
@@ -36,7 +35,8 @@ for node in cfg2.nodes():
         strands = GetStrands(node)
 
         for i in range(0, len(strands)):
-            strands[i], indexDict2 = StrandNorm(strands[i], indexDict2)
+            for j in range(0, len(strands[i])):
+                strands[i][j] = TypeNorm(strands[i][j])
 
         for strand in strands:
             md5 = hashlib.md5()
@@ -50,5 +50,3 @@ simSet = hashedStrandSet1.intersection(hashedStrandSet2)
 sim = len(simSet)
 
 print(sim, len(hashedStrandSet1), len(hashedStrandSet2))
-
-
