@@ -38,7 +38,7 @@ def GetStrands(node):
         stmt_str = str(stmt)
         strand = []
 
-        if (stmt.tag != 'Ist_IMark'):
+        if ((stmt.tag != 'Ist_IMark') & (stmt.tag != 'Ist_AbiHint')):
             refS = HandleIR(stmt_str)[1]
             if (len(refS) != 0):
                 strand.append(stmt)

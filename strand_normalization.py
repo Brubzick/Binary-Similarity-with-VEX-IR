@@ -37,12 +37,7 @@ def TypeNorm(stmt):
 
     match tag:
         case 'Ist_Put':
-            stmt_str_list = stmt_str.split()
-            for i in range(0, len(stmt_str_list)):
-                if stmt_str_list[i] == '=':
-                    tmp = stmt_str_list[i+1]
-                    break
-            if tmp[0:2] == '0x':
+            if stmt.data.tag == 'Iex_Const':
                 norm = 'Put.cons'
             else:
                 norm = 'Put'  
@@ -59,39 +54,30 @@ def TypeNorm(stmt):
                 norm = 'PutI'  
 
         case 'Ist_WrTmp':
-            stmt_str_list = stmt_str.split()
-            for i in range(0, len(stmt_str_list)):
-                if stmt_str_list[i] == '=':
-                    tmp = stmt_str_list[i+1]
-                    break
-            
-            if tmp[0] == 't':
+            exType = stmt.data.tag
+            if exType == 'Iex_Get':
+                norm = 'Get'
+            elif exType == 'Iex_RdTmp':
                 norm = 'Copy'
-            elif tmp[0:2] == '0x':
-                norm = 'Constant'
+            elif exType == 'Iex_Const':
+                norm = 'Const'
+            elif exType == 'Iex_Load':
+                norm == 'Load'
+            elif exType == 'Iex_CCall':
+                norm == 'CCall'
+            elif ((exType == 'Iex_Unop') | (exType == 'Iex_Binop') | (exType == 'Iex_Triop') | (exType == 'Iex_Qop')):
+                norm == stmt.data.op
             else:
-                for i in range(0, len(tmp)):
-                    if tmp[i] == '(':
-                        tmp = tmp[:i]
-                        break
-                norm = tmp
+                norm = 'stmt.data.tag'
 
         case 'Ist_Store':
-            stmt_str_list = stmt_str.split()
-            for i in range(0, len(stmt_str_list)):
-                if stmt_str_list[i] == '=':
-                    tmp = stmt_str_list[i+1]
-                    break
-            if tmp[0:2] == '0x':
+            if stmt.data.tag == 'Iex_Const':
                 norm = 'STle.cons'
             else:
                 norm = 'STle' 
 
-        case 'Ist_Dirty':
-            if (',' in stmt_str):
-                norm = 'Dirty.cons'
-            else:
-                norm = 'Dirty'
+        case _:
+            norm = 'stmt.tag'
     
     return norm
 

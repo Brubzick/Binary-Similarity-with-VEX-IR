@@ -14,7 +14,7 @@ hashedStrandSet2 = set()
 indexDict1 = {'max':0}
 indexDict2 = {'max':0}
 
-for node in cfg1.nodes():
+for node in sorted(cfg1.nodes(), key = lambda n: n.addr):
     if (not node.is_simprocedure):
 
         strands = GetStrands(node)
@@ -30,7 +30,7 @@ for node in cfg1.nodes():
             hashed_strand = md5.hexdigest()
             hashedStrandSet1.add(hashed_strand)
 
-for node in cfg2.nodes():
+for node in sorted(cfg2.nodes(), key = lambda n: n.addr):
     
     if (not node.is_simprocedure):
 
