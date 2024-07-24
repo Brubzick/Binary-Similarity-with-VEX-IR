@@ -1,3 +1,4 @@
+from strand_normalization import TypeNorm
 
 def HandleIR(stmt_str):
     defS = set()
@@ -57,3 +58,18 @@ def GetStrands(node):
 
     strands.reverse()
     return strands
+
+def GetAllStrandsNorm(cfg):
+    strandsNorm = []
+
+    for node in cfg.nodes():
+        if (not node.is_simprocedure):
+            strands = GetStrands(node)
+
+            for i in range(0, len(strands)):
+                for j in range(0, len(strands[i])):
+                    strands[i][j] = TypeNorm(strands[i][j])
+        
+            strandsNorm.extend(strands)
+
+    return strandsNorm
